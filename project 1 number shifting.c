@@ -1,25 +1,24 @@
-// header files
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
 #include<time.h>
 #include<string.h>
 
-//#include<ncurses.h>
-#include<curses.h>        //  for getch() equivalent in linux
+#include<ncurses.h>
+#include<curses.h>       
 
-// own heder files
-#include"getchInLinux.h" // contain definition of getch() equivalent in linux i.e getchInLinux()
+#include"getchInLinux.h"
 
-// create matrix 4*4
+ create matrix 4*4
 void  createMatrix(int arr[][4])
 {
     int n=15;
     int num[n],i,j;
-    for(i=0;i<15;i++)        // These 1-15 number will be in th matrix
+    for(i=0;i<15;i++)        
     num[i]=i+1;
 
-    srand(time(NULL));           // for random number generation
+    srand(time(NULL));           
 
     int lastIndex=n-1,index;
 
@@ -27,16 +26,15 @@ void  createMatrix(int arr[][4])
     for(j=0;j<4;j++)
   {
     if(lastIndex>=0)
-    {  index=rand()%(lastIndex+1); // idea : performing % operation by (lastIndex+1)
-       arr[i][j]=num[index];       // will give index , so put that num[index] number in matrix
-       num[index]=num[lastIndex--]; // and replace last number with this indexed positioned number
-    }                               // and finally lastIndex--
+    {  index=rand()%(lastIndex+1);
+       arr[i][j]=num[index];       
+       num[index]=num[lastIndex--]; 
+    }                               
   }
-       arr[i-1][j-1]=0;          // last number is zero
+       arr[i-1][j-1]=0;      
 
 }
 
-// showing matrix
 void showMatrix(int arr[][4])
 {
     int i,j;
@@ -55,7 +53,7 @@ void showMatrix(int arr[][4])
     printf("----------------------\n");
 }
 
-// winning check by this function
+
 int winner(int arr[][4])
 {
     int i,j,k=1;
@@ -71,7 +69,6 @@ int winner(int arr[][4])
         return 1;
 }
 
-// swap function to swap two numbers
 void swap(int *x,int *y)
 {
     *x=*x+*y;
@@ -80,20 +77,19 @@ void swap(int *x,int *y)
     printf("\a\a\a");
 }
 
-// Reads the user input character and return ascii value of that
+
 int readEnteredKey()
 {
         char c;
             c = getchInLinux();
-            if(c==27 || c==91)       // this is just for scan code
+            if(c==27 || c==91)      
          {  c = getchInLinux();
-             if(c==27 || c==91)     // also for scan code
+             if(c==27 || c==91)     
               c=getchInLinux();
          }
     return c;
 }
 
-// shift up function
 int shiftUp(int arr[][4])
 {
     int i,j;
@@ -105,10 +101,10 @@ int shiftUp(int arr[][4])
         if(j<4)
         break;
     }
-      if(i==3)                 // shifting not possible
+      if(i==3)                
         return 0;
         swap(&arr[i][j],&arr[i+1][j]);
-        return 1;               // shift up success
+        return 1;               
 }
 
 int shiftDown(int arr[][4])
@@ -122,11 +118,11 @@ int shiftDown(int arr[][4])
         if(j<4)
         break;
     }
-      if(i==0)                 // shifting not possible
+      if(i==0)                 
         return 0;
-         swap(&arr[i][j],&arr[i-1][j]);    // swap numbers
+         swap(&arr[i][j],&arr[i-1][j]);    
 
-        return 1;               // shift up success
+        return 1;         
 }
 
 int shiftRight(int arr[][4])
@@ -140,11 +136,11 @@ int shiftRight(int arr[][4])
         if(j<4)
         break;
     }
-      if(j==0)                 // shifting not possible
+      if(j==0)                 
         return 0;
              swap(&arr[i][j],&arr[i][j-1]);
 
-        return 1;               // shift up success
+        return 1;           
 }
 
 int shiftLeft(int arr[][4])
@@ -158,10 +154,10 @@ int shiftLeft(int arr[][4])
         if(j<4)
         break;
     }
-      if(j==3)                 // shifting not possible
+      if(j==3)               
         return 0;
                 swap(&arr[i][j],&arr[i][j+1]);
-        return 1;               // shift up success
+        return 1;              
 }
 
 // Game rules
@@ -210,55 +206,55 @@ void gameRule(int arr[][4])
 // main function
 int main()
 {
-    int arr[4][4];        // matrix
-    int maxTry=400;       // maximum move
+    int arr[4][4];      
+    int maxTry=400;       
     char name[20];
-   system("clear");        // to clear screen
+   system("clear");        
 
     printf("Enter Your Good Name: ");
     scanf("%s",name);
 
        while(1)
-    {             createMatrix(arr);    // calling funcn to create  matrix
-                  gameRule(arr);       // game rule function calling
+    {             createMatrix(arr);   
+                  gameRule(arr);      
 
-          while(!winner(arr))     // checking for winning situation
+          while(!winner(arr))     
         {
                system("clear");
-               if(!maxTry)        // for remaing zero move
+               if(!maxTry)        
                 break;
 
                printf("\n\n  welcome  %s  ,  Move remaining : %d\n\n",name,maxTry);
 
-              showMatrix(arr);      // show matrix
+              showMatrix(arr);    
 
 
-            int key=readEnteredKey();   // this will return ascii code of user entered key
+            int key=readEnteredKey();   
 
-        switch(key)          // maping
+        switch(key)         
         {
-            case 69:                  // ascii of E
+            case 69:                  
 
-            case 101:                 // ascii of e
+            case 101:                
                         printf("\a\a\a\a\a\a\n     Thanks for Playing ! \n\a");
                         printf("\nHit 'Enter' to exit the game \n");
                         key=readEnteredKey();
                         exit(0);
 
 
-            case 65:          // arrow up
+            case 65:          
                         if(shiftUp(arr))
                         maxTry--;
                         break;
-            case 66:          // arrow down
+            case 66:          
                         if(shiftDown(arr))
                         maxTry--;
                         break;
-            case 67:            // arrow  right
+            case 67:          
                         if(shiftRight(arr))
                         maxTry--;
                         break;
-            case 68:             // arrow left
+            case 68:            
                         if(shiftLeft(arr))
                         maxTry--;
                         break;
